@@ -1,5 +1,6 @@
 // Load up the discord.js library
 const Discord = require("discord.js");
+var schedule = require('node-schedule');  
 
 // This is your client. Some people call it `bot`, some people call it `self`, 
 // some might call it `cootchie`. Either way, when you see `client.something`, or `bot.something`,
@@ -11,12 +12,41 @@ const config = require("./config.json");
 // config.token contains the bot's token
 // config.prefix contains the message prefix.
 
+var randomLines = 
+[
+    'No raga mi ha chiamato mariachiara devo andare',
+    'Se dici serken un\'altra volta serken ti banno',
+    "Ora ti banno e quitto! Kys!",
+    "Ma ti credi divertente?! Ban",
+    "KysKysKysKysKysKysKysKysKysKysKysKysKysKys",
+    "Fra sei pesante",
+    "Ja fra stasera proprio no",
+    "Oh si regina calpestami pls",
+    "Tranquilla chiedo ai miei amici per i tuoi compiti <3",
+    "*chiamata da 5 ore*",
+    "No raga scusate ma vado a parlare con mariachiara",
+    "Oh discord",
+    "Hey siri chiama macchinetta in vivavoce",
+    "Hey siri chiama puccio merda in vivavoce",
+    "Non li so fare i tuoi compiti difficilissimi della scuola privata",
+    "Tranquilla chiedo ai miei amici per i tuoi compiti <3",
+    "Sono difficilissimi... 3+3 quanto fa???",
+    "Le scuole private sono difficili"
+]
+
 client.on("ready", () => {
   // This event will run if the bot starts, and logs in, successfully.
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
   // Example of changing the bot's playing game to something useful. `client.user` is what the
   // docs refer to as the "ClientUser".
   client.user.setActivity(`Serving ${client.guilds.size} servers`);
+
+  var j = schedule.scheduleJob('*/30 * * * *', function(){
+    var randomIndex = Math.floor(Math.random() * randomLines.length); 
+    var randomElement = randomLines[randomIndex];
+
+    await message.channel.send(randomElement);
+  });
 });
 
 client.on("guildCreate", guild => {
@@ -30,7 +60,6 @@ client.on("guildDelete", guild => {
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
   client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
-
 
 client.on("message", async message => {
   // This event will run on every single message received, from any channel or DM.
@@ -112,4 +141,4 @@ client.on("message", async message => {
   }
 });
 
-client.login(config.token);
+client.login(process.env.BOT_TOKEN);
